@@ -1,5 +1,6 @@
 package com.enviouse.raffletracker.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,32 @@ public final class RaffleData {
 
     public static List<RaffleTask> tasks() {
         return tasks;
+    }
+
+    /**
+     * Marks the named task complete so it drops straight off the tracker. Used when the chat
+     * message announcing a completed raffle task comes through. Returns true if a task changed.
+     */
+    public static boolean markCompleted(String taskName) {
+        List<RaffleTask> current = tasks;
+        if (current.isEmpty()) {
+            return false;
+        }
+        String wanted = taskName.trim();
+        List<RaffleTask> updated = new ArrayList<>(current.size());
+        boolean changed = false;
+        for (RaffleTask task : current) {
+            if (!task.completed() && task.name().equalsIgnoreCase(wanted)) {
+                updated.add(new RaffleTask(task.name(), task.description(), task.tier(), true));
+                changed = true;
+            } else {
+                updated.add(task);
+            }
+        }
+        if (changed) {
+            tasks = List.copyOf(updated);
+        }
+        return changed;
     }
 
     public static boolean hasTasks() {
