@@ -36,11 +36,11 @@ public final class RaffleData {
         if (current.isEmpty()) {
             return false;
         }
-        String wanted = taskName.trim();
+        String wanted = normalizeName(taskName);
         List<RaffleTask> updated = new ArrayList<>(current.size());
         boolean changed = false;
         for (RaffleTask task : current) {
-            if (!task.completed() && task.name().equalsIgnoreCase(wanted)) {
+            if (!task.completed() && normalizeName(task.name()).equals(wanted)) {
                 updated.add(new RaffleTask(task.name(), task.description(), task.tier(), true));
                 changed = true;
             } else {
@@ -51,6 +51,11 @@ public final class RaffleData {
             tasks = List.copyOf(updated);
         }
         return changed;
+    }
+
+    // strips color codes and spare spaces and lowercases, so the chat name and the chest name line up.
+    private static String normalizeName(String name) {
+        return name.replaceAll("§.", "").trim().replaceAll("\\s+", " ").toLowerCase();
     }
 
     public static boolean hasTasks() {

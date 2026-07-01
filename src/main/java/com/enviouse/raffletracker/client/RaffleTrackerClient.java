@@ -32,7 +32,11 @@ import java.util.regex.Pattern;
 public class RaffleTrackerClient implements ClientModInitializer {
 
     // matches the chat line that says you completed some raffle task, so we can grab the name.
-    private static final Pattern TASK_COMPLETE = Pattern.compile("You completed the (.+?) raffle task");
+    private static final Pattern TASK_COMPLETE =
+            Pattern.compile("You completed the (.+?) raffle task", Pattern.CASE_INSENSITIVE);
+
+    // the color codes hypixel puts in the line, we strip these out before matching.
+    private static final Pattern COLOR_CODES = Pattern.compile("§.");
 
     // the screens we last read, so each fresh open only announces once.
     private Screen lastTasksScreen;
@@ -44,15 +48,21 @@ public class RaffleTrackerClient implements ClientModInitializer {
         HudElementRegistry.addLast(RaffleTracker.id("raffle_tracker"), new RaffleHudElement());
         registerCommands();
         ClientTickEvents.END_CLIENT_TICK.register(this::onEndTick);
-        ClientReceiveMessageEvents.GAME.register(this::onGameMessage);
+        // hypixel can send the completion line as a game message or a plain chat message, so we
+        // listen to both and run them through the same handler.
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> handleMessage(message));
+        ClientReceiveMessageEvents.CHAT.register((message, signed, sender, params, timestamp) -> handleMessage(message));
         RaffleTracker.LOGGER.info("RaffleTracker client initialized");
     }
 
     // watches chat and drops a task off the tracker the moment its completion line shows up.
-    private void onGameMessage(Component message, boolean overlay) {
-        Matcher matcher = TASK_COMPLETE.matcher(message.getString());
+    private void handleMessage(Component message) {
+        String text = COLOR_CODES.matcher(message.getString()).replaceAll("");
+        Matcher matcher = TASK_COMPLETE.matcher(text);
         if (matcher.find()) {
-            RaffleData.markCompleted(matcher.group(1));
+            String name = matcher.group(1).trim();
+            boolean removed = RaffleData.markCompleted(name);
+            RaffleTracker.LOGGER.info("RaffleTracker saw a task completion for {}, removed from tracker {}", name, removed);
         }
     }
 
