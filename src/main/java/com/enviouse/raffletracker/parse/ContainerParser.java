@@ -16,12 +16,10 @@ import net.minecraft.world.item.component.ItemLore;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Parses the two Century Celebration chests into {@link RaffleTask}s and {@link RaffleDraw}s.
- *
- * <p>Only the top container is read (the trailing 36 slots are always the player inventory), so
- * paper/maps the player happens to be carrying are never mistaken for tasks.
- */
+// reads the two century celebration chests into task and draw objects.
+//
+// we only read the top container. the last 36 slots are always your own inventory, so paper or
+// maps you happen to be carrying never get mistaken for tasks.
 public final class ContainerParser {
 
     public static final String TASKS_TITLE = "Raffle Tasks";
@@ -32,7 +30,7 @@ public final class ContainerParser {
     private ContainerParser() {
     }
 
-    /** Reads the "Raffle Tasks" chest. Returns an empty list if the contents haven't loaded yet. */
+    // reads the raffle tasks chest. gives back an empty list if the contents havent loaded yet.
     public static List<RaffleTask> parseTasks(AbstractContainerMenu menu) {
         List<RaffleTask> tasks = new ArrayList<>();
         for (ItemStack stack : topContainerItems(menu)) {
@@ -52,7 +50,7 @@ public final class ContainerParser {
         return tasks;
     }
 
-    /** Reads the "Year 500 Incredible Raffle Box". Returns an empty list if not loaded yet. */
+    // reads the year 500 incredible raffle box. gives back an empty list if it isnt loaded yet.
     public static List<RaffleDraw> parseDraws(AbstractContainerMenu menu) {
         List<RaffleDraw> draws = new ArrayList<>();
         for (ItemStack stack : topContainerItems(menu)) {
@@ -103,10 +101,8 @@ public final class ContainerParser {
         return null;
     }
 
-    /**
-     * Joins the task description lines. Lore is laid out as: tier header, blank, one or more
-     * description lines, blank, then the COMPLETE/INCOMPLETE status.
-     */
+    // joins the description lines. the lore goes tier header, a blank line, one or more description
+    // lines, another blank, then the complete or incomplete status.
     private static String extractDescription(List<String> lore) {
         StringBuilder sb = new StringBuilder();
         for (int i = 1; i < lore.size(); i++) {
@@ -115,7 +111,7 @@ public final class ContainerParser {
                 if (sb.length() > 0) {
                     break; // reached the blank line after the description
                 }
-                continue; // still in the blank line before the description
+                continue; // still on the blank line before the description
             }
             if (line.equals("COMPLETE") || line.equals("INCOMPLETE")) {
                 break;
@@ -138,7 +134,7 @@ public final class ContainerParser {
         return lines;
     }
 
-    /** The item stacks in the top container only (excludes the 36 player-inventory slots). */
+    // just the stacks in the top container. skips the 36 player inventory slots.
     private static List<ItemStack> topContainerItems(AbstractContainerMenu menu) {
         int containerSize = menu.slots.size() - 36;
         if (containerSize <= 0) {

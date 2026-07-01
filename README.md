@@ -1,59 +1,54 @@
-# RaffleTracker
+# raffletracker
 
-A client-side Fabric mod for Hypixel SkyBlock's **Century Celebration** event. It shows a
-SkyHanni-styled, always-visible HUD overlay that tracks your incomplete Raffle Tasks and the live
-countdowns to each raffle draw.
+a client side fabric mod for the century celebration event on hypixel skyblock. it puts a little
+always visible overlay on your screen that tracks the raffle tasks you still need to do and counts
+down to each raffle draw. its meant to look and feel like skyhanni but its totally standalone, you
+dont need skyhanni installed and it doesnt hook into it at all.
 
-It is **standalone** — it only mirrors SkyHanni's look and feel (movable overlay, `/sh`-style config
-screen). SkyHanni does not need to be installed, and this mod does not hook into it.
+## what it does
 
-## Features
+the overlay has a bold raffle tracker title and a see through background so it stays out of the way.
+completed tasks get hidden, and each task you still need shows up with a short note on how to do it,
+like scribe slayer, kill a scribe. they are grouped into the three tiers, easy from paper that
+resets every 2 hours, medium from maps that resets every 24 hours, and hard from filled maps that
+resets when the event ends.
 
-- **Raffle Tracker HUD** — a bold "Raffle Tracker" title with a transparent background, always
-  visible while in-world.
-- **Task tracking** — completed tasks are hidden; each incomplete task is shown with the
-  description of how to complete it (e.g. `Scribe Slayer: Kill a Scribe.`), grouped by the three
-  tiers and their reset windows:
-  - Easy (paper) — resets every **2h**
-  - Medium (map) — resets every **24h**
-  - Hard (filled map) — resets at the **event** end
-- **Raffle countdowns** — a live "time to next raffle" countdown for each draw (Speed / Daily /
-  The Big One), with the soonest one highlighted.
-- **Auto task reset** — Raffle Tasks reset every time the Speed Raffle is drawn, so when its
-  countdown hits zero the tracker drops the stale task list and prompts you to re-run
-  `/centurytasks`. The Speed Raffle countdown automatically rolls forward to its next 2-hour cycle.
-- **Missing-data prompts** — if a chest hasn't been read yet, the overlay tells you exactly which
-  command to run.
-- **SkyHanni-style config** — categories down the left (`Hub`, `GUI`) with the tracker on/off toggle
-  and a drag-to-move / scroll-to-scale edit screen, plus a readable-backdrop option.
+it also shows a live countdown to each raffle draw, the speed one, the daily one, and the big one,
+with the soonest one highlighted. all of the timing runs off real clock time so it stays right even
+if your game lags or pauses.
 
-## Usage
+the raffle tasks reset every time the speed raffle draws, so when that timer hits zero the tracker
+clears the old task list and tells you to run the command again. it also watches chat, so the second
+you see the message that you completed a raffle task, that task drops off the list on its own.
 
-1. In game, run `/centurytasks` and open the **Raffle Tasks** chest — the mod reads it automatically.
-2. Run `/centuryrafflebox` and open the **Raffle Box** — the mod captures the draw countdowns.
-3. The HUD updates instantly. Data is re-read every time you reopen the chests.
+if you havent loaded any data yet the overlay just tells you which command to run.
 
-### Config
+## how to use it
 
-- `/raffletracker` (or `/rt`) opens the config screen.
-  - **Hub** → toggle the Raffle Tracker on/off.
-  - **GUI** → *Edit Position* (drag to move, scroll to scale), scale, **Background** on/off and
-    **Opacity** (fully transparent → fully opaque) for readability, **Descriptions** on/off (hide the
-    "how to complete" text and show just the task name), and reset-position.
+run /centurytasks and open the raffle tasks chest, it reads it on its own.
 
-Settings are saved to `config/raffletracker.json`. Parsed raffle data is kept in memory for the whole
-session, so it survives server hops.
+run /centuryrafflebox and open the raffle box, it grabs the draw timers.
 
-## Building
+the overlay updates right away, and it rereads the chests every time you open them again.
 
-Requires JDK 25.
+## config
 
-```bash
-JAVA_HOME=/path/to/jdk-25 ./gradlew build
-```
+type /raffletracker or /rt to open the config screen.
 
-The mod jar is produced at `build/libs/raffletracker-1.0.0.jar`.
+hub has the on and off toggle for the tracker.
 
-## License
+gui has edit position where you drag it around and scroll to change the size, a background toggle
+and an opacity setting so you can make it solid if the see through is hard to read, a descriptions
+toggle to hide the how to text and just show the task name, and a reset position button.
 
-Available under the CC0 license.
+your settings save to config/raffletracker.json. the raffle data stays in memory for the whole
+session so it carries over when you hop servers.
+
+## building
+
+you need jdk 25. point your java home at a jdk 25 and run the gradle build, something like
+JAVA_HOME=/path/to/jdk25 ./gradlew build. the finished jar shows up in build/libs.
+
+## license
+
+cc0, do whatever you want with it.

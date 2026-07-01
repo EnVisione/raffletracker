@@ -8,10 +8,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
-/**
- * SkyHanni-style "move the overlay" screen: drag the tracker to reposition it, scroll to scale.
- * Changes are saved on release / scroll and when the screen closes.
- */
+// the move the overlay screen, skyhanni style. drag the tracker to move it, scroll to change the
+// size. changes save when you let go or scroll and when the screen closes.
 public class RaffleEditScreen extends Screen {
 
     private static final int DIM_BACKGROUND = 0x88000000;

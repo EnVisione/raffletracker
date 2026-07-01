@@ -8,11 +8,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-/**
- * A small SkyHanni-flavoured config screen: categories down the left ("Hub", "GUI"), the selected
- * category's options on the right. This is intentionally standalone — SkyHanni exposes no public
- * API, so the mod just mirrors the look and feel.
- */
+// a small config screen with a skyhanni kind of vibe. categories run down the left, hub and gui,
+// and the options for whichever one you pick show on the right. its fully standalone. skyhanni has
+// no public api so we just copy the look and feel.
 public class RaffleConfigScreen extends Screen {
 
     private static final int CATEGORY_HUB = 0;
@@ -23,7 +21,7 @@ public class RaffleConfigScreen extends Screen {
     private static final int DIVIDER_COLOR = 0x40FFFFFF;
     private static final int HEADER_BAR = 0x90000000;
 
-    // Right-hand option column layout, shared by init() and the label drawing so they line up.
+    // layout for the right side option column. init and the label drawing share it so they line up.
     private static final int OPT_X = 115;
     private static final int OPT_Y = 58;
     private static final int OPT_GAP = 24;
@@ -42,11 +40,11 @@ public class RaffleConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        // Left column: category selector.
+        // left column, the category picker.
         addCategoryButton("Hub", CATEGORY_HUB, 40);
         addCategoryButton("GUI", CATEGORY_GUI, 64);
 
-        // Right column: options for the selected category.
+        // right column, the options for whichever category is picked.
         if (category == CATEGORY_HUB) {
             initHubOptions();
         } else {
@@ -141,7 +139,7 @@ public class RaffleConfigScreen extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor ctx, int mouseX, int mouseY, float delta) {
-        // Decoration is drawn first; super paints the interactive widgets on top.
+        // we draw the decoration first, then super paints the buttons on top.
         super.extractRenderState(ctx, mouseX, mouseY, delta);
 
         ctx.fill(0, 0, this.width, 28, HEADER_BAR);

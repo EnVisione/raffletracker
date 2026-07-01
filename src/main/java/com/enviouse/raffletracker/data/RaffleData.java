@@ -3,15 +3,13 @@ package com.enviouse.raffletracker.data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Holds the most recently parsed raffle state. Written from the client tick thread when the
- * player opens the relevant chests, read from the render thread. Lists are replaced atomically
- * and fields are volatile so no locking is required.
- *
- * <p>Everything is derived from real wall clock time ({@link System#currentTimeMillis()}), never
- * from game ticks, so countdowns and resets stay correct even if the game lags or pauses. State is
- * kept in memory for the whole game session, so it survives server hops.
- */
+// holds the latest raffle state we parsed. written on the client tick thread when you open the
+// chests, read on the render thread. the lists get swapped out in one go and the fields are
+// volatile so we dont need any locking.
+//
+// everything runs off real clock time, never game ticks, so the countdowns and resets stay right
+// even if the game lags or pauses. we keep it in memory for the whole session so it sticks around
+// when you hop servers.
 public final class RaffleData {
 
     private static volatile List<RaffleTask> tasks = List.of();
@@ -31,10 +29,8 @@ public final class RaffleData {
         return tasks;
     }
 
-    /**
-     * Marks the named task complete so it drops straight off the tracker. Used when the chat
-     * message announcing a completed raffle task comes through. Returns true if a task changed.
-     */
+    // marks the named task done so it drops straight off the tracker. we call this when the chat
+    // line about finishing a task shows up. returns true if something actually changed.
     public static boolean markCompleted(String taskName) {
         List<RaffleTask> current = tasks;
         if (current.isEmpty()) {
@@ -74,11 +70,8 @@ public final class RaffleData {
         return !draws.isEmpty();
     }
 
-    /**
-     * Milliseconds remaining until the next real draw. For repeating draws the captured target time
-     * is rolled forward by whole periods so the countdown keeps pointing at the next real draw,
-     * purely from wall clock time.
-     */
+    // how many millis are left until the next real draw. for repeating draws we roll the saved
+    // target forward by whole periods so it always points at the next one, straight off clock time.
     public static long remainingMillis(RaffleDraw draw) {
         long now = System.currentTimeMillis();
         long target = drawsCapturedAt + draw.untilDrawMillis();
@@ -91,7 +84,7 @@ public final class RaffleData {
         return target - now;
     }
 
-    /** The Speed Raffle draw, or {@code null} if the raffle box hasn't been read yet. */
+    // the speed raffle draw, or null if we havent read the raffle box yet.
     public static RaffleDraw speedDraw() {
         for (RaffleDraw draw : draws) {
             if (draw.type() == DrawType.SPEED) {
@@ -101,11 +94,9 @@ public final class RaffleData {
         return null;
     }
 
-    /**
-     * Whether the loaded tasks are stale, meaning a Speed Raffle has been drawn since we read them
-     * (tasks reset on every Speed Raffle draw). Worked out from wall clock time, so no ticking is
-     * needed. Returns false if we cannot tell yet, for example when the raffle box has not been read.
-     */
+    // tells us if the loaded tasks are stale, meaning a speed raffle drew since we read them. tasks
+    // reset on every speed raffle draw. this runs off clock time so no ticking is needed. returns
+    // false if we cant tell yet, like when the raffle box hasnt been read.
     public static boolean tasksStale() {
         if (tasks.isEmpty()) {
             return false;
@@ -118,7 +109,7 @@ public final class RaffleData {
         if (period <= 0L) {
             return false;
         }
-        // The first Speed Raffle draw at or after the moment we captured the tasks.
+        // the first speed raffle draw at or after the moment we grabbed the tasks.
         long target = drawsCapturedAt + speed.untilDrawMillis();
         while (target <= tasksCapturedAt) {
             target += period;

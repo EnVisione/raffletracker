@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/** Loads and saves {@link RaffleConfig} to {@code config/raffletracker.json}. */
+// loads and saves the config to config/raffletracker.json.
 public final class ConfigManager {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();

@@ -1,22 +1,22 @@
 package com.enviouse.raffletracker.config;
 
-/** Persisted settings for the mod. Plain fields so Gson can (de)serialize it directly. */
+// saved settings for the mod. plain fields so gson can read and write them straight.
 public class RaffleConfig {
 
-    /** Hub category: master on/off toggle for the HUD element. */
+    // hub category. the main toggle for the hud, on or off.
     public boolean enabled = true;
 
-    /** GUI category: HUD position, in scaled-GUI pixels, and render scale. */
+    // gui category. where the hud sits in gui pixels, plus the render size.
     public float hudX = 5.0f;
     public float hudY = 5.0f;
     public float scale = 1.0f;
 
-    /** GUI category: draw a solid backdrop behind the text (helps readability over busy scenes). */
+    // gui category. draw a solid backdrop behind the text so its easier to read over busy scenes.
     public boolean backgroundEnabled = false;
-    /** Backdrop opacity, 0 (fully transparent) to 1 (fully opaque). */
+    // backdrop opacity, from 0 fully see through up to 1 fully solid.
     public float backgroundOpacity = 0.5f;
 
-    /** GUI category: when false, tasks show only their name, hiding the "how to complete" text. */
+    // gui category. when off, tasks show just their name and hide the how to text.
     public boolean showDescriptions = true;
 
     public static final float MIN_SCALE = 0.5f;

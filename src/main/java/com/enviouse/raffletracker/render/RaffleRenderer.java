@@ -18,12 +18,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Draws the RaffleTracker overlay. The same drawing is used by both the in-game HUD element and
- * the edit screen, so positioning stays identical in both. Completed tasks are hidden; only the
- * incomplete ones (with their how-to description, unless disabled) and the live raffle countdowns
- * are shown. When there is no data, the overlay tells the player which command to run.
- */
+// draws the raffle tracker overlay. both the in game hud element and the edit screen use this same
+// drawing so it lines up in both. completed tasks are hidden. we only show the ones you still need,
+// with the how to text unless you turned it off, plus the live raffle countdowns. when theres no
+// data yet the overlay tells you which command to run.
 public final class RaffleRenderer {
 
     private static final int TEXT_FALLBACK = 0xFFFFFFFF; // components carry their own colors
@@ -34,12 +32,9 @@ public final class RaffleRenderer {
     private RaffleRenderer() {
     }
 
-    /**
-     * Renders the tracker at the given scaled-GUI position.
-     *
-     * @param editMode when true, draws a grab outline (and a faint fill if no backdrop is enabled)
-     * @return the on-screen size {@code [width, height]} of the content, for edit-mode hit testing
-     */
+    // draws the tracker at the given gui position.
+    // editMode true draws a grab outline, plus a faint fill if no backdrop is on.
+    // returns the on screen width and height of the content so the edit screen can do hit testing.
     public static int[] render(GuiGraphicsExtractor ctx, Font font, int x, int y, float scale, boolean editMode) {
         if (scale <= 0f) {
             scale = 1f;

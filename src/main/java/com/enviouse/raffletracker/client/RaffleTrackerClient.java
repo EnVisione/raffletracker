@@ -27,16 +27,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Client entrypoint. Registers the HUD overlay, the {@code /raffletracker} config command, and a
- * tick listener that reads the Century Celebration chests whenever the player opens them.
- */
+// client entrypoint. sets up the hud overlay, the /raffletracker config command, and a tick
+// listener that reads the century celebration chests when you open them.
 public class RaffleTrackerClient implements ClientModInitializer {
 
-    // Matches "RAFFLE TASK! You completed the <name> raffle task and earned ..." from chat.
+    // matches the chat line that says you completed some raffle task, so we can grab the name.
     private static final Pattern TASK_COMPLETE = Pattern.compile("You completed the (.+?) raffle task");
 
-    // The screen instances we last parsed, so each fresh open announces exactly once.
+    // the screens we last read, so each fresh open only announces once.
     private Screen lastTasksScreen;
     private Screen lastBoxScreen;
 
@@ -50,7 +48,7 @@ public class RaffleTrackerClient implements ClientModInitializer {
         RaffleTracker.LOGGER.info("RaffleTracker client initialized");
     }
 
-    /** Watches chat and drops a task from the tracker the moment its completion message appears. */
+    // watches chat and drops a task off the tracker the moment its completion line shows up.
     private void onGameMessage(Component message, boolean overlay) {
         Matcher matcher = TASK_COMPLETE.matcher(message.getString());
         if (matcher.find()) {
@@ -67,14 +65,14 @@ public class RaffleTrackerClient implements ClientModInitializer {
 
     private int openConfig(CommandContext<FabricClientCommandSource> context) {
         Minecraft mc = context.getSource().getClient();
-        // Defer to the next tick so the chat screen has finished closing before we swap screens.
+        // wait for the next tick so the chat screen is fully closed before we swap screens.
         mc.execute(() -> mc.setScreen(new RaffleConfigScreen()));
         return 1;
     }
 
     private void onEndTick(Minecraft client) {
-        // This only detects an open chest so its contents can be read. Countdowns and the task
-        // reset are worked out from wall clock time at render time, never from ticks.
+        // this just spots an open chest so we can read it. the countdowns and the task reset run
+        // off real clock time when we draw, never off ticks.
         if (!(client.screen instanceof AbstractContainerScreen<?> containerScreen)) {
             return;
         }

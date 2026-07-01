@@ -7,11 +7,9 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
-/**
- * The always-visible, transparent-background HUD overlay. Registered as a Fabric HUD element so it
- * follows vanilla HUD visibility rules (hidden with F1, hidden while a full screen is open — the
- * edit screen draws its own preview instead).
- */
+// the always visible hud overlay with a see through background. its a fabric hud element so it
+// follows the normal hud rules. it hides with f1 and hides while a full screen is open, and the
+// edit screen draws its own preview instead.
 public class RaffleHudElement implements HudElement {
 
     @Override
@@ -24,8 +22,8 @@ public class RaffleHudElement implements HudElement {
         if (mc.player == null || mc.level == null) {
             return;
         }
-        // While any screen is open the edit screen (or the menu itself) owns the overlay, so skip
-        // drawing here to avoid a double-rendered tracker.
+        // while any screen is open the edit screen or the menu itself owns the overlay, so we skip
+        // drawing here so we dont end up with two trackers on top of each other.
         if (mc.screen != null) {
             return;
         }

@@ -2,10 +2,8 @@ package com.enviouse.raffletracker.data;
 
 import net.minecraft.ChatFormatting;
 
-/**
- * The three Raffle Task tiers, keyed by the item type Hypixel uses for them in the
- * "Raffle Tasks" chest, plus how often each tier resets.
- */
+// the three task tiers. we tell them apart by the item hypixel uses for them in the raffle tasks
+// chest, and each tier knows how often it resets.
 public enum TaskTier {
     EASY("Easy", "2h", ChatFormatting.GREEN),
     MEDIUM("Medium", "24h", ChatFormatting.YELLOW),
