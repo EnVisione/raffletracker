@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "raffletracker",
+	"version": "${version}",
+	"name": "RaffleTracker",
+	"description": "A SkyHanni-styled client HUD that tracks Century Celebration raffle tasks and raffle draw countdowns on Hypixel SkyBlock.",
+	"authors": [
+		"enviouse"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/enviouse/RaffleTracker"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/raffletracker/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"com.enviouse.RaffleTracker"
+		],
+		"client": [
+			"com.enviouse.raffletracker.client.RaffleTrackerClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.1",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
